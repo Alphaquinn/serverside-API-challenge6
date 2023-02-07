@@ -12,7 +12,7 @@ const fivedayEl = document.querySelector("#5day");
 
 const getcurrentweatherhandler = function (event){
     currentcityWeatherEl.innerHTML="";
-    const cityname = citynameEl.ariaValueMax.trim();
+    const cityname = citynameEl.value.trim();
     cityname.value = "";
     APIBUILDER(cityname);
 
