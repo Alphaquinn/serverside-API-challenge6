@@ -1,0 +1,45 @@
+ header{
+    height: 120px;
+    background-color: #1E90FF;
+    background-image: linear-gradient(to right,#1E90FF, #0000CD );
+    font-size: 46px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    padding-top: 40px;
+  }
+
+
+
+
+.cityBorder{
+    border: 2px solid black;
+}
+.btnMargin{
+    margin: 4px;
+    width: 100%;
+}
+
+
+.width{
+    width: 100%
+}
+
+
+
+.uvLow{
+    color: yellow;
+    font-weight: 700;
+}
+
+
+.uvMed{
+    color: orange;
+    font-weight: 700;
+}
+
+
+.uvHigh{
+    color: red;
+    font-weight: 700;
+}

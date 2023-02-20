@@ -1,61 +1,62 @@
-var apiKey= "069760cb904c2be978ec2f3da1860237";
-let citySearchHistory = JSON.parse(localStorage.getItem("#cityHistory")) ||[];
+const apiKey = "069760cb904c2be978ec2f3da1860237";
+let citySearchHistory = JSON.parse(localStorage.getItem("cityHistory")) ||[];
 let today = new Date().toLocaleDateString();
-let currentcitylat;
-let currentcitylon;
-const citysearchbutton= document.querySelector("#userCitybutton");
-const citynameEl= document.querySelector("userCityInput");
+let currentCityLat;
+let currentCityLon;
+const citySearchButton = document.querySelector("#userCityButton");
+const cityNameEl = document.querySelector("#userCityInput");
 const cityHistoryColumnEl = document.querySelector("#cityHistory");
-const currentcityWeatherEl = document.getElementById ("#currentcityweather");
-const fivedayEl = document.querySelector("#5day");
+const currentCityWeatherEl = document.getElementById ("currentcityweather");
+const fiveDayEl = document.querySelector("#fiveDay");
 
+//APIBuilder
 
-const getcurrentweatherhandler = function (event){
-    currentcityWeatherEl.innerHTML="";
-    const cityname = citynameEl.value.trim();
-    cityname.value = "";
-    APIBUILDER(cityname);
+//"069760cb904c2be978ec2f3da1860237"
+
+const GetCurrentWeatherHandler = function (event){
+    currentCityWeatherEl.innerHTML="";
+    const cityName = cityNameEl.value.trim();
+    cityNameEl.value = "";
+    APIBUILDER(cityName);
 
 };
-
-const APIBUILDER = function(cityname){
-    currentcityWeatherEl.innerHTML="";
-    const currentweatherAPIURL = "http://api.openweathermap.org/data/2.5/weather?q=" +
-    cityName + "&units=imperial" + "&appid=" +
-    apiKey;
-    console.log("current weather api:"+ currentweatherAPIURL);
-    fetch(currentweatherAPIURL).then(function(response){
+//currentWeatherApiUrl
+const APIBUILDER = function(cityName){
+    currentCityWeatherEl.innerHTML="currentcitweather";
+    const currentWeatherAPIURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial" + "&appid=" + apiKey;
+    console.log("current weather api:"+ currentWeatherAPIURL);
+    fetch(currentWeatherAPIURL).then(function(response){
         if (response.ok){
-            citysearchhandler(cityname);
+            citySearchHandler(cityName);
             console.log(response);
             response.json().then(function(data){
-                console.log("current weather data");
+                console.log("current weather data:");
                 console.log(data);
-                const currentcityname = document.createElement("h2");
-                const currentcitytemperature = document.createElement("p");
-                const currentcityhumidity = document.createElement("p");
-                const currentcitywindspeed = document.createElement("p");
+                const currentCityName = document.createElement("h2");
+                const currentCityTemperature = document.createElement("p");
+                const currentCityHumidity = document.createElement("p");
+                const currentCityWindspeed = document.createElement("p");
 
 
-                currentcityname.textContent = `${data.name},${today}`;
-                currentcitytemperature.textContent = `Temp: ${data.main.temp} feirennheit`;
-                currentcityhumidity.textContent = `${data.main.humidity}%`;
-                currentcitywindspeed.textcontent = `${data.wind.speed}Mph`;
+                currentCityName.textContent = `${data.name},${today}`;
+                currentCityTemperature.textContent = `Temp: ${data.main.temp} feirennheit`;
+                currentCityHumidity.textContent = `${data.main.humidity}%`;
+                currentCityWindspeed.textContent = `${data.wind.speed}Mph`;
 
 
-                currentcityWeatherEl.append(
-                    currentcityname,
-                    currentcitytemperature,
-                    currentcityhumidity,
-                    currentcitywindspeed
+                currentCityWeatherEl.append(
+                    currentCityName,
+                    currentCityTemperature,
+                    currentCityHumidity,
+                    currentCityWindspeed
                 );
 
 
-                currentcitylat = data.coord.lat;
-                currentcitylon = data.coord.lon;
-                console.log(currentcitylat);
-                console.log(currentcitylon);
-                SingleCallWeatherHandler();
+                currentCityLat = data.coord.lat;
+                currentCityLon = data.coord.lon;
+                console.log(currentCityLat);
+                console.log(currentCityLon);
+                oneCallWeatherHandler();
     
             });
         }
@@ -63,7 +64,8 @@ const APIBUILDER = function(cityname){
 };
 
 
-const SingleCallWeatherHandler = function(){
+
+const oneCallWeatherHandler = function(){
     const OneCallAPIURL =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
     currentCityLat +
@@ -82,15 +84,15 @@ const SingleCallWeatherHandler = function(){
             const currentcityUV = document.createElement("p");
 
 
-            if (data.current.uvi<3){
-                currentcityUV.classList.add("low UV");
+            if (data.current.uvi < 3){
+                currentcityUV.classList.add("uvLow");
             } else if (data.current.uvi>2 && data.current.uvi<8) {
-                currentcityUV.classlist.add("med UV");
-            }else {currentcityUV.classlist.add("high UV");
+                currentcityUV.classList.add("uvMed");
+            }else {currentcityUV.classList.add("uvHigh");
         }
-            currentcityUV.textcontent= `UVI: ${data.current.uvi}`;
-            currentcityWeatherEl.append(currentcityUV);
-            fivedayElhandler(data.daily);
+            currentcityUV.textContent= `UVI: ${data.current.uvi}`;
+            currentCityWeatherEl.append(currentcityUV);
+            fiveDayElHandler(data.daily);
 
 
         });
@@ -99,10 +101,10 @@ const SingleCallWeatherHandler = function(){
 };
 
 
-const fivedayElhandler = function(fivedaydata){
-    fivedayEl.innerHTML=""
+const fiveDayElHandler = function(fiveDayData){
+    fiveDayEl.innerHTML=""
     for (let i=1; i<6; i++){
-        let newDate = new Date(fivedaydata[i].dt*1000).toLocaleDateString("en-US")
+        let newDate = new Date(fiveDayData[i].dt*1000).toLocaleDateString("en-US")
         let newDiv = document.createElement("div");
         newDiv.classList.add("col-lg")
         let newEl = `<div class="card">
@@ -119,4 +121,56 @@ fiveDayEl.append(newDiv);
   }
 };
 
+var citySearchHandler = function(cityName){
+    if (!citySearchHistory.includes(cityName)) {
+        citySearchHistory.push(cityName);
+        console.log(citySearchHistory);
+        cityButtonFactory(cityName);
+    }
+    saveCity(citySearchHistory);
+};
+
+
+
+let saveCity = function(cityHistory){
+    localStorage.setItem("cityHistory", JSON.stringify(cityHistory));
+};
+
+
+let loadCity = function(){
+    let loadedCityName = localStorage.getItem("cityHistory");
+    return JSON.parse(loadedCityName);
+};
+
+
+
+
+const cityButtonFactory = function (cityName){
+    let citySearchHistoryEl = document.createElement("button");
+    citySearchHistoryEl.type="button";
+    citySearchHistoryEl.className = "btn btn-secondary btnMargin";
+    citySearchHistoryEl.innerText = cityName;
+    cityHistoryColumnEl.appendChild(citySearchHistoryEl);
+    citySearchHistoryEl.addEventListener("click", ()=>APIBUILDER(cityName));
+
+
+};
+
+
+const loadSearchHistory = function() {
+    const loadCityHistory = localStorage.getItem("cityHistory");
+    const parsedCityHistory = JSON.parse(loadCityHistory);
+    console.log(parsedCityHistory);
+    if (parsedCityHistory) {
+      parsedCityHistory.forEach(cityButtonFactory);
+      }
+    };
+  
+
+citySearchButton.addEventListener("click", GetCurrentWeatherHandler);
+window.onload= loadSearchHistory;
+
+
+
+//check lines 13-17 for citynames handler
     
