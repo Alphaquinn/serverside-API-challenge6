@@ -129,12 +129,12 @@ let saveCity = function (cityHistory) {
   localStorage.setItem("cityHistory", JSON.stringify(cityHistory));
 };
 
-/////    load saved cities name to page(history button)    /////
+//    load saved cities name to page(history button)    
 let loadCity = function () {
   let loadedCityName = localStorage.getItem("cityHistory");
 };
 
-/////     create button for historical city    /////
+//   create button for historical city    
 const cityButtonFactory = function (cityName) {
   let citySearchHistoryEl = document.createElement("button");
   citySearchHistoryEl.type = "button";
